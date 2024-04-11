@@ -84,6 +84,10 @@ int main()
             break;
 
         case 7:
+            about_us();
+            break;
+
+        case 8:
             // Save data to file
             save_data();
             return 0;
@@ -112,7 +116,8 @@ void display_main()
     printf("---          4.Edit account detail                                ---\n");
     printf("---          5.Delete account                                     ---\n");
     printf("---          6.Display accounts above or below a certain amount   ---\n");
-    printf("---          7.Exit                                               ---\n");
+    printf("---          7.About us                                           ---\n");
+    printf("---          8.Exit                                               ---\n");
     printf("-------------------------------------------------------------------\n");
 
     printf("Enter any option: ");
@@ -741,4 +746,16 @@ void display_accounts_below_amount()
         printf("Please contact to your Bank Customer Services\n");
         getch();
     }
+}
+
+void about_us()
+{
+    printf("-----------------------------------------------------------------------------------\n");
+    printf("This is a cs102 project on bank management system\n");
+    printf("This is a Project of project group 34(in group 1-10)\n");
+    printf("Member of this group are: \n");
+    printf("2301EE42 , 2301AI46 , 2301CB59 , 2301CT35 , 2301EE57 , 2301CT36 , 2301CS73 ,2301CS79 , 2301EC47\n");
+    printf("All rights to the above project is under the project group34\n");
+    printf("------------------------------------------------------------------------------------\n");
+    getch();
 }
