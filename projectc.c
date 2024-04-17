@@ -29,6 +29,7 @@ struct Loan
     struct Loan *next;
 };
 
+// Feed back structure
 struct feed_back
 {
     char responce;
@@ -930,39 +931,61 @@ void apply_loan()
         return;
     }
 
-    struct Node *current = head;
-    for (int i = 0; i < index; i++)
+    int check = 0;
+    struct Loan *current_loan = loan_head;
+    while (current_loan != NULL)
     {
-        current = current->next;
+        if (current_loan->acc_number == acc)
+        {
+            count++;
+        }
+        current_loan = current_loan->next;
     }
 
-    printf("Enter loan amount: ");
-    scanf("%d", &loan_amount);
-
-    if (loan_amount <= 0)
+    if (count == 0)
     {
-        printf("Invalid loan amount!!!\n");
-        printf("Please enter a valid amount\n");
+        struct Node *current = head;
+        for (int i = 0; i < index; i++)
+        {
+            current = current->next;
+        }
+
+        printf("Enter loan amount: ");
+        scanf("%d", &loan_amount);
+
+        if (loan_amount <= 0)
+        {
+            printf("Invalid loan amount!!!\n");
+            printf("Please enter a valid amount\n");
+            getch();
+            return;
+        }
+
+        total_amount = current->amount + loan_amount;
+        current->amount = total_amount;
+
+        // Add loan to the loan list
+        struct Loan *newLoan = (struct Loan *)malloc(sizeof(struct Loan));
+        newLoan->acc_number = acc;
+        newLoan->loan_amount = loan_amount;
+        strcpy(newLoan->name, current->name);
+        newLoan->loan_balance = loan_amount;
+        newLoan->next = loan_head;
+        loan_head = newLoan;
+        loan_count++;
+
+        printf("Loan of %d has been approved and credited to your account.\n", loan_amount);
+        printf("Total amount in your account: %d\n", total_amount);
         getch();
-        return;
     }
-
-    total_amount = current->amount + loan_amount;
-    current->amount = total_amount;
-
-    // Add loan to the loan list
-    struct Loan *newLoan = (struct Loan *)malloc(sizeof(struct Loan));
-    newLoan->acc_number = acc;
-    newLoan->loan_amount = loan_amount;
-    strcpy(newLoan->name, current->name);
-    newLoan->loan_balance = loan_amount;
-    newLoan->next = loan_head;
-    loan_head = newLoan;
-    loan_count++;
-
-    printf("Loan of %d has been approved and credited to your account.\n", loan_amount);
-    printf("Total amount in your account: %d\n", total_amount);
-    getch();
+    else
+    {
+        printf("-------------------------------------------------------------------\n");
+        printf("---     Loan account already present with this account number %d ---\n", acc);
+        printf("---     Please contact the bank manager for this                ---\n");
+        printf("-------------------------------------------------------------------\n");
+        getch();
+    }
 }
 
 // Function to display loan data for a specific or all accounts
