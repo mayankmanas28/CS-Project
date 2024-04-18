@@ -931,7 +931,7 @@ void apply_loan()
         return;
     }
 
-    int check = 0;
+    int count = 0;
     struct Loan *current_loan = loan_head;
     while (current_loan != NULL)
     {
