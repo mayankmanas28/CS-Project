@@ -40,8 +40,6 @@ struct feed_back
 struct Node *head = NULL;
 struct Loan *loan_head = NULL;
 struct feed_back *feed_head = NULL;
-int count = 0;
-int loan_count = 0;
 
 // Function prototypes
 void add_account();
@@ -240,6 +238,9 @@ void display_main()
 
     // Different functions choices
     printf("---------------------------------------------------------------------\n");
+    printf("--                Bank Management System                           --\n");
+    printf("---------------------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------\n");
     printf("---          1.Add account                                        ---\n");
     printf("---          2.Display account data                               ---\n");
     printf("---          3.ATM                                                ---\n");
@@ -247,11 +248,11 @@ void display_main()
     printf("---          5.Delete account                                     ---\n");
     printf("---          6.Display accounts above or below a certain amount   ---\n");
     printf("---          7.Apply for Loan                                     ---\n");
-    printf("---          8.Display loan data                                   ---\n");
+    printf("---          8.Display loan data                                  ---\n");
     printf("---          9.About us                                           ---\n");
-    printf("---          10.Feed back display                                  ---\n");
-    printf("---          11.Exit                                               ---\n");
-    printf("-------------------------------------------------------------------\n");
+    printf("---          10.Feed back display                                 ---\n");
+    printf("---          11.Exit                                              ---\n");
+    printf("---------------------------------------------------------------------\n");
 
     printf("Enter any option: ");
 }
@@ -322,7 +323,6 @@ void add_account()
 
     newNode->next = head;
     head = newNode;
-    count++;
 }
 
 // ATM services of the Bank for 3 functions deposit , withdraw,transfer
@@ -368,86 +368,6 @@ void atm()
         getch();
         break;
     }
-}
-
-// Displaying a particular record
-void display_data()
-{
-    // Clear the screen before displaying account data
-    clear_screen();
-    int option;
-
-    // Asking for choice of display
-    printf("Select a field to edit:\n");
-    printf("-------------------------------------------------------------------\n");
-    printf("---      1.Personal data                            ---\n");
-    printf("---      2.All data display                         ---\n");
-    printf("---      3.Exit                                     ---\n");
-    printf("-------------------------------------------------------------------\n");
-    scanf("%d", &option);
-
-    struct Node *current = head;
-
-    // Personal Data display
-    if (option == 1)
-    {
-        int acc, pass, amo;
-        printf("Enter account number: ");
-        scanf("%d", &acc);
-        printf("Enter password: ");
-        scanf("%d", &pass);
-
-        int index = acc_index(acc, pass);
-        if (index == -1)
-        {
-            printf("Account does not exist or password is incorrect!!!\n");
-            printf("Please contact to your Bank Customer Services\n");
-            getch();
-            return;
-        }
-        else
-        {
-            printf("-------------------------------------\n");
-            printf("Account Number: %d\n", current->acc_number);
-            printf("Name: %s\n", current->name);
-            printf("Amount: %d\n", current->amount);
-            printf("-------------------------------------\n");
-            getch();
-        }
-        display_data();
-    }
-
-    // All accouunts Data Display
-    if (option == 2)
-    {
-        printf("Account details:\n");
-        if (current == NULL)
-        {
-            printf("NO account Exist!!!");
-            printf("Please contact to your Bank Customer Services\n");
-            getch();
-        }
-
-        else
-        {
-            while (current != NULL)
-            {
-                printf("-------------------------------------\n");
-                printf("Account Number: %d\n", current->acc_number);
-                printf("Name: %s\n", current->name);
-                printf("Amount: %d\n", current->amount);
-                printf("-------------------------------------\n");
-                current = current->next;
-            }
-            getch();
-            display_data();
-        }
-    }
-
-    // Exit option not perform anything
-    if (option == 3)
-    {
-    };
 }
 
 // Depositing money to the account
@@ -580,6 +500,12 @@ void transfer()
         return;
     }
 
+    struct Node *to_node = head;
+    for (int i = 0; i < to_index; i++)
+    {
+        to_node = to_node->next;
+    }
+
     // Entering transferring amount
     printf("Enter amount to transfer: ");
     scanf("%d", &amount_transfer);
@@ -595,26 +521,105 @@ void transfer()
     // Transfer data process
     from_node->amount -= amount_transfer;
 
-    struct Node *to_node = head;
-    for (int i = 0; i < to_index; i++)
-    {
-        to_node = to_node->next;
-    }
-
     to_node->amount += amount_transfer;
 
-    printf("-------------------------------------\n");
+    printf("---------------------------------------------------------------------\n");
     printf("Amount transferred successfully.\n");
-    printf("-------------------------------------\n\n");
-    printf("-------------------------------------\n");
+    printf("-------------------------------------------------------------------\n\n");
+    printf("---------------------------------------------------------------------\n");
     printf("Final Amount in sender account number %d and name  %s  \n", from_node->acc_number, from_node->name);
     printf("Final Amount in sender account: %d\n", from_node->amount);
-    printf("-------------------------------------\n");
-    printf("-------------------------------------\n\n");
+    printf("---------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------\n\n");
     printf("Final Amount in recipient account number %d and name  %s \n", to_node->acc_number, to_node->name);
     printf("Final Amount in recipient account: %d \n", to_node->amount);
-    printf("-------------------------------------\n");
+    printf("--------------------------------------------------------------------\n");
     getch();
+}
+
+// Displaying a particular record
+void display_data()
+{
+    // Clear the screen before displaying account data
+    clear_screen();
+    int option;
+
+    // Asking for choice of display
+    printf("Select a field to edit:\n");
+    printf("-------------------------------------------------------------------\n");
+    printf("---      1.Personal data                            ---\n");
+    printf("---      2.All data display                         ---\n");
+    printf("---      3.Exit                                     ---\n");
+    printf("-------------------------------------------------------------------\n");
+    scanf("%d", &option);
+
+    struct Node *current = head;
+
+    // Personal Data display
+    if (option == 1)
+    {
+        int acc, pass, amo;
+        printf("Enter account number: ");
+        scanf("%d", &acc);
+        printf("Enter password: ");
+        scanf("%d", &pass);
+
+        int index = acc_index(acc, pass);
+        if (index == -1)
+        {
+            printf("Account does not exist or password is incorrect!!!\n");
+            printf("Please contact to your Bank Customer Services\n");
+            getch();
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < index; i++)
+            {
+                current = current->next;
+            }
+            printf("-------------------------------------\n");
+            printf("Account Number: %d\n", current->acc_number);
+            printf("Name: %s\n", current->name);
+            printf("Amount: %d\n", current->amount);
+            printf("-------------------------------------\n");
+            getch();
+        }
+        display_data();
+    }
+
+    // All accouunts Data Display
+    if (option == 2)
+    {
+        printf("Account details:\n");
+        if (current == NULL)
+        {
+            printf("NO account Exist!!!");
+            printf("Please contact to your Bank Customer Services\n");
+            getch();
+        }
+
+        else
+        {
+            while (current != NULL)
+            {
+                printf("-------------------------------------\n");
+                printf("Account Number: %d\n", current->acc_number);
+                printf("Name: %s\n", current->name);
+                printf("Amount: %d\n", current->amount);
+                printf("-------------------------------------\n");
+                current = current->next;
+            }
+            getch();
+            display_data();
+        }
+    }
+
+    // Exit option not perform anything
+    if (option == 3)
+    {
+        return;
+    };
 }
 
 // Deleting the account
@@ -657,7 +662,6 @@ void delete_account()
     }
 
     free(current);
-    count--;
 
     printf("-------------------------------------------------------------------\n");
     printf("Account Deleted successfully with account number %d.\n", acc);
@@ -809,6 +813,7 @@ void display_above_below()
         break;
 
     case 3:
+        return;
         break;
 
     default:
@@ -851,7 +856,7 @@ void display_accounts_above_amount()
     }
     getch();
 
-    if (!found)
+    if (found == 0)
     {
         printf("No accounts found with amount greater than %d.\n", threshold);
         printf("Please contact to your Bank Customer Services\n");
@@ -890,7 +895,7 @@ void display_accounts_below_amount()
     }
     getch();
 
-    if (!found)
+    if (found == 0)
     {
         printf("No accounts found with amount greater than %d.\n", threshold);
         printf("Please contact to your Bank Customer Services\n");
@@ -901,11 +906,18 @@ void display_accounts_below_amount()
 void about_us()
 {
     printf("-----------------------------------------------------------------------------------\n");
-    printf("This is a cs102 project on bank management system\n");
-    printf("This is a Project of project group 34(in group 1-10)\n");
-    printf("Member of this group are: \n");
-    printf("2301EE42 , 2301AI46 , 2301CB59 , 2301CT35 , 2301CT36 , 2301CS73 ,2301CS79 , 2301EC47\n");
-    printf("All rights to the above project is under the project group34\n");
+    printf("--     This is a cs102 project on bank management system                         --\n");
+    printf("--     This is a Project of project group 34(in group 1-10)                      --\n");
+    printf("--     Member of this group are:                                                 --\n");
+    printf("--     2301EE42 :- Mayank Manas                                                  --\n");
+    printf("--     2301AI46 :- Kumar Anurag                                                  --\n");
+    printf("--     2301CB59 :- Dinesh Guguloth                                               --\n");
+    printf("--     2301CT35 :- Akashat Mishra                                                --\n");
+    printf("--     2301CT36 :- Tanushree vikas Janbandhu                                     --\n");
+    printf("--     2301CS73 :- Karnati Supriya                                               --\n");
+    printf("--     2301CS79 :- Sanjay Dasu                                                   --\n");
+    printf("--     2301EC48 :- Kalyan Adithya Eslavath                                       --\n");
+    printf("--     All rights to the above project is under the project group34\n");
     printf("------------------------------------------------------------------------------------\n");
     getch();
 }
@@ -970,9 +982,9 @@ void apply_loan()
         newLoan->loan_amount = loan_amount;
         strcpy(newLoan->name, current->name);
         newLoan->loan_balance = loan_amount;
+
         newLoan->next = loan_head;
         loan_head = newLoan;
-        loan_count++;
 
         printf("Loan of %d has been approved and credited to your account.\n", loan_amount);
         printf("Total amount in your account: %d\n", total_amount);
@@ -980,10 +992,10 @@ void apply_loan()
     }
     else
     {
-        printf("-------------------------------------------------------------------\n");
-        printf("---     Loan account already present with this account number %d ---\n", acc);
-        printf("---     Please contact the bank manager for this                ---\n");
-        printf("-------------------------------------------------------------------\n");
+        printf("--------------------------------------------------------------------\n");
+        printf("---     Loan account already present with this account number %d ----\n", acc);
+        printf("---     Please contact the bank manager for this                ----\n");
+        printf("--------------------------------------------------------------------\n");
         getch();
     }
 }
@@ -1032,7 +1044,7 @@ void display_loan_data()
             current = current->next;
         }
 
-        if (!found)
+        if (found == 0)
         {
             printf("No loan records found for account number %d.\n", acc);
             printf("Please contact to your Bank Customer Services\n");
@@ -1070,6 +1082,7 @@ void display_loan_data()
         break;
 
     case 3:
+        return;
         break;
 
     default:
@@ -1129,7 +1142,6 @@ void load_data()
         {
             newNode->next = head;
             head = newNode;
-            count++;
         }
     }
 
@@ -1177,7 +1189,6 @@ void load_loan_data()
         {
             newLoan->next = loan_head;
             loan_head = newLoan;
-            loan_count++;
         }
     }
     fclose(file);
